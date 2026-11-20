@@ -200,6 +200,11 @@ button { cursor: pointer; }
 .legend-line.dash { border-top-style: dashed; }
 
 /* popup */
+#gh { position: fixed; right: 12px; bottom: max(10px, env(safe-area-inset-bottom)); z-index: 5; display: flex; padding: 7px;
+  border-radius: 50%; background: var(--panel); box-shadow: var(--shadow); color: var(--fg); }
+#gh svg { width: 20px; height: 20px; display: block; }
+/* below this width the event panel reaches the right edge, so sit above it */
+@media (max-width: 999px) { #gh { bottom: calc(max(10px, env(safe-area-inset-bottom)) + var(--panel-h, 0px) + 8px); } }
 #popup { position: fixed; z-index: 7; background: var(--panel-solid); box-shadow: var(--shadow); border-radius: 10px; padding: 8px 10px;
   max-width: 260px; font-size: 13px; display: none; }
 #popup.open { display: block; }
@@ -247,6 +252,8 @@ button { cursor: pointer; }
   <button id="zfit" title="Show whole map" aria-label="Show whole map / back to previous view" aria-pressed="false">⤢</button>
   <button id="follow" title="Follow the current event" aria-label="Follow the current event" aria-pressed="true">⌖</button>
 </div>
+
+<a id="gh" href="https://github.com/fischman/map-lotr/actions" target="_blank" rel="noopener" title="GitHub: map-lotr actions" aria-label="GitHub: map-lotr actions" data-nopan><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
 
 <aside id="drawer" data-nopan>
   <div id="tabs">
@@ -587,6 +594,7 @@ async function main() {
   kick();
 }
 
+new ResizeObserver(() => document.documentElement.style.setProperty('--panel-h', S('panel').getBoundingClientRect().height + 'px')).observe(S('panel'));
 function panelHeight() { return S('panel').getBoundingClientRect().height + 20; }
 
 // ---------- people ----------
